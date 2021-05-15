@@ -2,6 +2,7 @@
 using imovi.Models.MovieModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -9,16 +10,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace imovi.Controllers {
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
-
+        private UserContext db;
         HttpClient client;
-        public HomeController(ILogger<HomeController> logger) {
+        public HomeController(ILogger<HomeController> logger, UserContext context) {
             _logger = logger;
             client = new HttpClient();
+            db = context;
         }
 
         [Authorize]
@@ -112,6 +115,18 @@ namespace imovi.Controllers {
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        public async Task<string> AddToFavourites(Movie movie) {
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+            db.UsersMovies.Add(new User_Movie {
+                user=user,
+                movie_id = movie.id
+            });
+            db.SaveChanges();
+            
+            return "Спасибо, " + "sdfdsfsf" + ", за покупку!";
         }
     }
 }

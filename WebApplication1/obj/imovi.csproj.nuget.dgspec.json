@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\Desktop\\imovi\\WebApplication1\\imovi.csproj": {}
+    "C:\\Users\\Lenovo\\Desktop\\Projects\\DotNet\\imovi\\WebApplication1\\imovi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\Desktop\\imovi\\WebApplication1\\imovi.csproj": {
+    "C:\\Users\\Lenovo\\Desktop\\Projects\\DotNet\\imovi\\WebApplication1\\imovi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\imovi\\WebApplication1\\imovi.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\Projects\\DotNet\\imovi\\WebApplication1\\imovi.csproj",
         "projectName": "imovi",
-        "projectPath": "C:\\Users\\Lenovo\\Desktop\\imovi\\WebApplication1\\imovi.csproj",
+        "projectPath": "C:\\Users\\Lenovo\\Desktop\\Projects\\DotNet\\imovi\\WebApplication1\\imovi.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\Desktop\\imovi\\WebApplication1\\obj\\",
+        "outputPath": "C:\\Users\\Lenovo\\Desktop\\Projects\\DotNet\\imovi\\WebApplication1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -44,6 +44,12 @@
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.6, )"
             }

@@ -6,7 +6,6 @@
     <title>@ViewData["Title"] - imovi</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico?v=2" />
 </head>
 <body class="bg-dark text-light">
     <header>
@@ -42,6 +41,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">@ViewBag.username</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                         </li>
                     </ul>
                 </div>
