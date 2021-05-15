@@ -1,0 +1,41 @@
+﻿@model imovi.Models.MovieModels.MovieDetail
+@using imovi.Models.MovieModels
+@{
+    ViewData["Title"] = Model.original_title.ToString();
+
+}
+
+
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=2" />
+<h4>@Model.original_title</h4>
+
+<div style="clear: left;" class="picture-style">
+    <p style="float: left;">
+        <img src="https://image.tmdb.org/t/p/w500/@Model.backdrop_path"
+             class="rounded" alt="@Model.original_title" title="@Model.original_title">
+    </p>
+    <p>Year: @Model.release_date.Year</p>
+    <p>TMDB: @Model.popularity</p>
+    <p>Language: @Model.original_language</p>
+    <p>Duration: @Model.runtime min.</p>
+    <p>Status: @Model.status</p>
+    <button name="AddToFavBtn">ADD TO FAVOURITAS</button>
+
+</div>
+<br />
+<br />
+<br />
+<div>
+    <p>
+        Genre:
+        @foreach (Genre genre in Model.genres) {
+        @(genre.name + ", ")
+    }   
+        </p>
+    </div>
+<p>Budget: @Model.budget $</p>
+<p>Tagline: @Model.tagline</p>
+<p><a href="@Model.homepage" target="_blank">Movie homepage</a></p>
+<div class="embed-responsive embed-responsive-16by9">
+    <iframe class="responsive-iframe" src="https://www.youtube.com/embed/@ViewBag.videoKey"></iframe>
+</div>
