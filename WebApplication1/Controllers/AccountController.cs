@@ -1,4 +1,5 @@
-﻿using imovi.Models;
+﻿
+using imovi.Models;
 using imovi.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -29,9 +30,11 @@ namespace imovi.Controllers {
                 if (user != null) {
                     await Authenticate(model.Email); // аутентификация
 
+                    
+                    //return Redirect("javascript:history.go(-2)");
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                ModelState.AddModelError("", "Wrong login or password");
             }
             return View(model);
         }
@@ -51,10 +54,10 @@ namespace imovi.Controllers {
 
                     await Authenticate(model.Email); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    return Redirect("javascript:history.go(-1)");
                 }
                 else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                    ModelState.AddModelError("", "Wrong login or password");
             }
             return View(model);
         }
@@ -73,7 +76,7 @@ namespace imovi.Controllers {
 
         public async Task<IActionResult> Logout() {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

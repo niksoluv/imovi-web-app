@@ -2,43 +2,49 @@
 @using imovi.Models.MovieModels
 @{
     ViewData["Title"] = Model.original_title.ToString();
-
 }
 
 
 
-<h4>@Model.original_title</h4>
+<div class="bg-dark">
+    <h4>@Model.original_title</h4>
+    <div style="clear: left;" class="picture-style">
+        <p style="float: left;">
+            <img src="https://image.tmdb.org/t/p/w500/@Model.backdrop_path"
+                 class="rounded" alt="@Model.original_title" title="@Model.original_title">
+        </p>
+        <p>Year: @Model.release_date.Year</p>
+        <p>TMDB: @Model.popularity</p>
+        <p>Language: @Model.original_language</p>
+        <p>Duration: @Model.runtime min.</p>
+        <p>Status: @Model.status</p>
+        <form method="post" asp-controller="Home" asp-action="AddToFavourites">
+            <input type="hidden" value="@Model.id" name="id" />
+            <button type="submit">ADD TO FAVOURITES</button>
+        </form>
 
-<div style="clear: left;" class="picture-style">
-    <p style="float: left;">
-        <img src="https://image.tmdb.org/t/p/w500/@Model.backdrop_path"
-             class="rounded" alt="@Model.original_title" title="@Model.original_title">
-    </p>
-    <p>Year: @Model.release_date.Year</p>
-    <p>TMDB: @Model.popularity</p>
-    <p>Language: @Model.original_language</p>
-    <p>Duration: @Model.runtime min.</p>
-    <p>Status: @Model.status</p>
-    <form method="post" asp-controller="Home" asp-action="AddToFavourites">
-        <input type="hidden" value="@Model.id" name="id" />
-        <button type="submit">ADD TO FAVOURITES</button>
-    </form>
-    
-</div>
-<br />
-<br />
-<br />
-<div>
-    <p>
-        Genre:
-        @foreach (Genre genre in Model.genres) {
-        @(genre.name + ", ")
-    }   
+    </div>
+    <br />
+    <br />
+    <br />
+    <div>
+        <p>
+            Genre:
+            @foreach (Genre genre in Model.genres) {
+                @(genre.name + ", ")
+            }
         </p>
     </div>
-<p>Budget: @Model.budget $</p>
-<p>Tagline: @Model.tagline</p>
-<p><a href="@Model.homepage" target="_blank">Movie homepage</a></p>
-<div class="embed-responsive embed-responsive-16by9">
-    <iframe class="responsive-iframe" src="https://www.youtube.com/embed/@ViewBag.videoKey"></iframe>
+    <p>Budget: @Model.budget $</p>
+    <p>Tagline: @Model.tagline</p>
+    <p><a href="@Model.homepage" target="_blank">Movie homepage</a></p>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="bs-example" data-example-id="responsive-embed-16by9-iframe-youtube">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="responsive-iframe" src="https://www.youtube.com/embed/@ViewBag.videoKey"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

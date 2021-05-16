@@ -24,7 +24,6 @@ namespace imovi.Controllers {
             db = context;
         }
 
-        [Authorize]
         public IActionResult Index() {
             //return Content(User.Identity.Name);
 
@@ -38,6 +37,7 @@ namespace imovi.Controllers {
         }
 
         public IActionResult Popular() {
+            ViewBag.username = User.Identity.Name;
             var response = client.
                 GetStringAsync("https://api.themoviedb.org/3/movie/popular?api_key=30c4ec1f7ead936d610a56b54bc4bbd4");
             var data = response.Result;
@@ -48,6 +48,7 @@ namespace imovi.Controllers {
 
         [HttpGet]
         public IActionResult Detail(int id) {
+            ViewBag.username = User.Identity.Name;
             //get movie detail
             var response = client.
                 GetStringAsync("https://api.themoviedb.org/3/movie/"
@@ -67,10 +68,12 @@ namespace imovi.Controllers {
                 ViewBag.videoKey = vr.results.FirstOrDefault().key;
             else
                 ViewBag.videoKey = "";
+            ViewBag.bgImage = "https://image.tmdb.org/t/p/w500/" + movie.poster_path;
             return View(movie);
         }
 
         public IActionResult Trending() {
+            ViewBag.username = User.Identity.Name;
             var response = client.
                 GetStringAsync("https://api.themoviedb.org/3/trending/all/day?api_key=30c4ec1f7ead936d610a56b54bc4bbd4");
             var data = response.Result;
@@ -80,6 +83,7 @@ namespace imovi.Controllers {
         }
 
         public IActionResult TopRated() {
+            ViewBag.username = User.Identity.Name;
             var response = client.
                 GetStringAsync("https://api.themoviedb.org/3/movie/top_rated?api_key=30c4ec1f7ead936d610a56b54bc4bbd4");
             var data = response.Result;
@@ -89,6 +93,7 @@ namespace imovi.Controllers {
         }
 
         public IActionResult Upcoming() {
+            ViewBag.username = User.Identity.Name;
             var response = client.
                 GetStringAsync("https://api.themoviedb.org/3/movie/upcoming?api_key=30c4ec1f7ead936d610a56b54bc4bbd4");
             var data = response.Result;
@@ -98,6 +103,7 @@ namespace imovi.Controllers {
         }
 
         public IActionResult Latest() {
+            ViewBag.username = User.Identity.Name;
             var response = client.
                 GetStringAsync("https://api.themoviedb.org/3/movie/latest?api_key=30c4ec1f7ead936d610a56b54bc4bbd4");
             var data = response.Result;
@@ -109,24 +115,28 @@ namespace imovi.Controllers {
         }
 
         public IActionResult Privacy() {
+            ViewBag.username = User.Identity.Name;
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {
+            ViewBag.username = User.Identity.Name;
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<string> AddToFavourites(Movie movie) {
+        public async Task<RedirectToActionResult> AddToFavourites(Movie movie) {
+            ViewBag.username = User.Identity.Name;
             User user = await db.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
             db.UsersMovies.Add(new User_Movie {
                 user=user,
                 movie_id = movie.id
             });
             db.SaveChanges();
-            
-            return "Спасибо, " + "sdfdsfsf" + ", за покупку!";
+
+            return RedirectToAction("Detail", new { id = movie.id });
         }
     }
 }
