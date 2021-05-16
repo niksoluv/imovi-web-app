@@ -20,7 +20,7 @@
         <p>Status: @Model.status</p>
         <form method="post" asp-controller="Home" asp-action="AddToFavourites">
             <input type="hidden" value="@Model.id" name="id" />
-            <button type="submit">ADD TO FAVOURITES</button>
+            <button type="submit">@ViewBag.buttonCaption</button>
         </form>
 
     </div>

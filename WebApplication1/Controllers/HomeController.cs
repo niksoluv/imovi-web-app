@@ -47,8 +47,15 @@ namespace imovi.Controllers {
         }
 
         [HttpGet]
-        public IActionResult Detail(int id) {
+        public async Task<IActionResult> Detail(int id) {
             ViewBag.username = User.Identity.Name;
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+            var userMovie = db.UsersMovies.Where(
+                um => um.user == user && um.movie_id == id).ToList().FirstOrDefault();
+            if (userMovie != null) 
+                ViewBag.buttonCaption = "REMOVE FROM FAVOURITES";
+            else
+                ViewBag.buttonCaption = "ADD TO FAVOURITES";
             //get movie detail
             var response = client.
                 GetStringAsync("https://api.themoviedb.org/3/movie/"
@@ -114,6 +121,24 @@ namespace imovi.Controllers {
             return View("Index", movies);
         }
 
+        public async Task<IActionResult> Favourites() {
+            ViewBag.username = User.Identity.Name;
+            User user = await db.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+            var userMovies = db.UsersMovies.Where(
+                um => um.user == user).ToList();
+            List<Movie> movieList = new List<Movie>();
+            foreach(var um in userMovies) {
+                var response = client.
+                    GetStringAsync("https://api.themoviedb.org/3/movie/"
+                    + um.movie_id
+                    + "?api_key=30c4ec1f7ead936d610a56b54bc4bbd4");
+                Movie movie = JsonConvert.DeserializeObject<Movie>(response.Result);
+                movieList.Add(movie);
+            }
+
+            return View("Index", movieList);
+        }
+
         public IActionResult Privacy() {
             ViewBag.username = User.Identity.Name;
             return View();
@@ -130,13 +155,24 @@ namespace imovi.Controllers {
         public async Task<RedirectToActionResult> AddToFavourites(Movie movie) {
             ViewBag.username = User.Identity.Name;
             User user = await db.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
-            db.UsersMovies.Add(new User_Movie {
-                user=user,
-                movie_id = movie.id
-            });
-            db.SaveChanges();
 
-            return RedirectToAction("Detail", new { id = movie.id });
+            var userMovie = db.UsersMovies.Where(
+                um => um.user == user && um.movie_id == movie.id).ToList().FirstOrDefault();
+            if (userMovie!=null) {
+                db.UsersMovies.Remove(userMovie);
+                ViewBag.buttonCaption = "REMOVE FROM FAVOURITES";
+                db.SaveChanges();
+                return RedirectToAction("Detail", new { id = movie.id });
+            }
+            else {
+                db.UsersMovies.Add(new User_Movie {
+                    user = user,
+                    movie_id = movie.id
+                });
+                ViewBag.buttonCaption = "ADD TO FAVOURITES";
+                db.SaveChanges();
+                return RedirectToAction("Detail", new { id = movie.id });
+            }
         }
     }
 }
