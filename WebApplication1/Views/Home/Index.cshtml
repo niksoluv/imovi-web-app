@@ -5,20 +5,28 @@
 
 <div class="row p-3 mb-2 bg-dark text-white">
     @foreach (var movie in Model) {
-    <div>
-        <h4><a href="~/Home/Detail/@movie.id">@movie.original_title</a></h4>
 
-        <div style="clear: left;" class="picture-style">
-            <p style="float: left;">
-                <img src="https://image.tmdb.org/t/p/w500/@movie.backdrop_path"
-                     class="rounded" alt="@movie.original_title" title="@movie.original_title">
-            </p><div class="md-4">
-                <p>Overview: @movie.overview</p>
-                <p>Release date: @movie.release_date</p>
-                <p>TMDB: @movie.vote_average</p>
+        <div class="container">
+            <div class="row">
+                <h4><a href="~/Home/Detail/@movie.id">@movie.original_title</a></h4>
+            </div>
+            <div class="row">
+                <div style="clear: left;" class="picture-style col-sm">
+                    <div class=" col-sm">
+                        <p style="float: left;">
+                            <img src="https://image.tmdb.org/t/p/w500/@movie.backdrop_path"
+                                 class="rounded" alt="@movie.original_title" title="@movie.original_title">
+                        </p>
+                    </div>
+
+
+                </div>
+                <div class="md-4 col-sm">
+                    <p>Overview: @movie.overview</p>
+                    <p>Release date: @movie.release_date</p>
+                    <p>TMDB: @movie.vote_average</p>
+                </div>
             </div>
         </div>
-
-    </div>
     }
 </div>

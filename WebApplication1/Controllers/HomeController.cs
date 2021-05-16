@@ -24,6 +24,7 @@ namespace imovi.Controllers {
             db = context;
         }
 
+
         public IActionResult Index() {
             //return Content(User.Identity.Name);
 
@@ -121,6 +122,7 @@ namespace imovi.Controllers {
             return View("Index", movies);
         }
 
+        [Authorize]
         public async Task<IActionResult> Favourites() {
             ViewBag.username = User.Identity.Name;
             User user = await db.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
